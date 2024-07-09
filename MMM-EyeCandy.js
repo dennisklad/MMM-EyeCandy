@@ -7,14 +7,12 @@
 Module.register("MMM-EyeCandy", {
     // Default module config.
     defaults: {
-        style: '1', // 1-52
+        style: '1', // Choose image if not slideshow
         maxWidth: "100%", // Adjusts size of images. Retains aspect ratio.
         // Overrides style. Local path or internet URL's. This will be a list of urls that can be set
         //in config.js
-        ownImagePaths: [],
-        updateInterval: 5 * 60 * 1000, // set in config.js
+        updateInterval: 5 * 60 * 1000, // set in config.js -> 0 means no slideshow!
         animationSpeed: 3000,
-        currentImg: 0,
     },
 
     start: function () {
@@ -112,21 +110,30 @@ Module.register("MMM-EyeCandy", {
             // Added 5/10/20
             '84': 'https://media.giphy.com/media/VgBk8EZQILIaPIJymY/giphy.gif',
 
-        }
-        // Initialize URL with a random image
-        this.url = this.eyesUrls[String(Math.floor(Math.random() * Object.keys(this.eyesUrls).length) + 1)];
+            // You can add your own images here!!!
 
-        console.log("THIS IS MY URL:" + this.url);
+        }
+
+        // Initialize URL with a random image
+        if (this.config.style != '' || this.config.updateInterval > 0) {
+		this.url = this.eyesUrls[String(Math.floor(Math.random() * Object.keys(this.eyesUrls).length) + 1)];
+	}
+	else if (this.config.style != '' || this.config.updateInterval == 0) {
+            this.url = this.eyesUrls[this.config.style];
+	}
 
         var self = this;
-        const intervalId = setInterval(function () {
-            // Select a random image index
-            self.config.currentImg = Math.floor(Math.random() * Object.keys(self.eyesUrls).length);
-            self.url = self.eyesUrls[String(self.config.currentImg + 1)];
-            console.log("NEW IMAGE SELECTED:" + self.url);
 
-            self.updateDom(self.config.animationSpeed || 0); // Use config.animationSpeed or revert to zero @ninjabreadman
-        }, this.config.updateInterval)
+	if (this.config.updateInterval > 0) {
+
+	        const intervalId = setInterval(function () {
+			// Select a random image index
+			self.config.currentImg = Math.floor(Math.random() * Object.keys(self.eyesUrls).length);
+			self.url = self.eyesUrls[String(self.config.currentImg + 1)];
+			console.log("NEW IMAGE SELECTED:" + self.url);
+			self.updateDom(self.config.animationSpeed || 0); // Use config.animationSpeed or revert to zero @ninjabreadman
+        	}, this.config.updateInterval);
+	}
     },
 
     getStyles: function () {
@@ -139,7 +146,7 @@ Module.register("MMM-EyeCandy", {
         var image = document.createElement("img");
         var getTimeStamp = new Date();
 
-        if (this.config.ownImagePaths.length > 1 || this.config.style != '') {
+        if (this.config.style != '') {
             image.classList.add = "photo";
             image.src = this.url + "?seed=" + getTimeStamp;
 

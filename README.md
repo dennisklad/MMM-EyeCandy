@@ -26,7 +26,8 @@ You can even choose your own local images or internet images.
     config: {
         maxWidth: "75%",       // Sizes the images. Retains aspect ratio.
         style: '1',            // Style number or use ownImagePath to override style
-        ownImagePath: '',      // ex: 'modules/MMM-EyeCandy/pix/YOUR_PICTURE_NAME.jpg', or internet url to image
+        updateInterval: 5 * 60 * 1000 // Choose another image every 5 minutes.
+				      // Set this value to 0 if you want only the selected style!
     }
 },
 ```
@@ -122,4 +123,4 @@ You can even choose your own local images or internet images.
 
 ## Remember!
 
-* You can always use local files that you have or url's to internet photos
+* You can always add more url's to internet photos in the list!
