@@ -9,12 +9,16 @@ Module.register("MMM-EyeCandy", {
     defaults: {
         style: '1', // 1-52
         maxWidth: "100%", // Adjusts size of images. Retains aspect ratio.
-        ownImagePath: '', // Overrides style. Local path or internet URL's.
+        // Overrides style. Local path or internet URL's. This will be a list of urls that can be set
+        //in config.js
+        ownImagePaths: [],
         updateInterval: 5 * 60 * 1000, // set in config.js
         animationSpeed: 3000,
+        currentImg: 0,
     },
 
-    start: function() {
+    start: function () {
+        console.log("Starting MMM-EyeCandy");
         self = this;
         this.url = '';
         this.eyesUrls = {
@@ -109,44 +113,39 @@ Module.register("MMM-EyeCandy", {
             '84': 'https://media.giphy.com/media/VgBk8EZQILIaPIJymY/giphy.gif',
 
         }
+        // Initialize URL with a random image
+        this.url = this.eyesUrls[String(Math.floor(Math.random() * Object.keys(this.eyesUrls).length) + 1)];
 
-        //	console.log(this.eyesUrls[this.config.style]);
-        if (this.config.ownImagePath != '') {
-            this.url = this.config.ownImagePath;
-        } else {
-            if (this.config.style != '') {
-                this.url = this.eyesUrls[this.config.style];
-            }
-        }
+        console.log("THIS IS MY URL:" + this.url);
 
-        // ADDED: Schedule update timer courtesy of ninjabreadman
         var self = this;
-        setInterval(function() {
-            self.updateDom(self.config.animationSpeed || 0); // use config.animationSpeed or revert to zero @ninjabreadman
-        }, this.config.updateInterval);
+        const intervalId = setInterval(function () {
+            // Select a random image index
+            self.config.currentImg = Math.floor(Math.random() * Object.keys(self.eyesUrls).length);
+            self.url = self.eyesUrls[String(self.config.currentImg + 1)];
+            console.log("NEW IMAGE SELECTED:" + self.url);
 
+            self.updateDom(self.config.animationSpeed || 0); // Use config.animationSpeed or revert to zero @ninjabreadman
+        }, this.config.updateInterval)
     },
 
-    getStyles: function() {
+    getStyles: function () {
         return ["MMM-EyeCandy.css"]
     },
 
     // Override dom generator.
-    getDom: function() {
+    getDom: function () {
         var wrapper = document.createElement("div");
         var image = document.createElement("img");
         var getTimeStamp = new Date();
-        if (this.config.ownImagePath != '') {
-            image.classList.add = "photo";
-            image.src = this.url + "?seed=" + getTimeStamp;
 
-            image.style.maxWidth = this.config.maxWidth;
-        } else if (this.config.style != '') {
+        if (this.config.ownImagePaths.length > 1 || this.config.style != '') {
             image.classList.add = "photo";
             image.src = this.url + "?seed=" + getTimeStamp;
 
             image.style.maxWidth = this.config.maxWidth;
         }
+
         wrapper.appendChild(image);
 
         return wrapper;
@@ -155,7 +154,7 @@ Module.register("MMM-EyeCandy", {
 
     /////  Add this function to the modules you want to control with voice //////
 
-    notificationReceived: function(notification, payload) {
+    notificationReceived: function (notification, payload) {
         if (notification === 'HIDE_EYECANDY') {
             this.hide();
         } else if (notification === 'SHOW_EYECANDY') {
