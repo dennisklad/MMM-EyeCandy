@@ -68,7 +68,6 @@ Module.register("MMM-EyeCandy", {
             '46': 'http://bestanimations.com/Humans/Skulls/skull-animation-gif-2.gif',
             '47': 'http://www.gifimagesdownload.com/wp-content/uploads/2016/02/best-cool-gifs-773.gif',
             '48': 'https://static.tumblr.com/fc536f36bf2da8ddb6374ba63a89a479/wslnmk1/EvLo1xgf0/tumblr_static_tumblr_static_filename_640.gif',
-            '49': 'http://www.sihirperisi.com/icerik/wall/sihirperisicom-man-face-erkek-yuzu%20(32).jpg',
             '50': 'http://orig02.deviantart.net/f176/f/2008/348/f/7/smiley_face_gif_by_sookie_by_sookiesooker.gif',
             '51': 'http://static.giga.de/wp-content/uploads/2015/05/face-red-loop-15.emoji_-rcm320x0.gif',
             '52': 'https://upload-assets.vice.com/files/2016/12/19/1482167674giphy__3_.gif',
